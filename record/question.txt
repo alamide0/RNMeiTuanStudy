@@ -1,0 +1,88 @@
+2017/07/18
+关于ReactNative接入到原生应用中出现的一些问题
+1. compileSdkVersion 23最好是23，在26上会出现一些问题，且很难解决。高版本的AndroidStudio编译器默认的编译版本为26，而且还换不了23，
+换完之后会报各种错，很烦！所以还是用低版本的集成开发环境吧！
+2.compile 'com.android.support:appcompat-v7:23.0.1'这个一定要写对，如果写23.0.3或者等等也会出现问题
+3. maven {
+            // All of React Native (JS, Android binaries) is installed from npm
+            url "$rootDir/node_modules/react-native/android"
+        }
+这边的路径要写对，这边的意思是去找这个库，之前我写错了。所以会报错
+4.package.json中 
+    "react": "^16.0.0-alpha.12",
+    "react-native": "0.45.0"
+这边要写成这样，如果这边写的不是这样，需要重新安装。先去工程目录下删除node_modules这个文件夹，然后将package.json中改成上面的样子。然后在终端
+（Terminal）中输入npm install 或者不删除 直接改过之后 npm update
+5.
+AppRegistry.registerComponent('reactttt', () => HelloWorld);
+"name": "reactttt",
+mReactRootView.startReactApplication(mReactInstanceManager, "reactttt", null);
+这三处需要一致
+
+6.
+E/unknown:React: Unable to download JS bundle  
+E/unknown:React: java.net.ConnectException: failed to connect to localhost/127.0.0.1 (port 8081) after 5000ms: isConnected failed: ECONNREFUSED (Connection refused)  
+E/unknown:React:     at libcore.io.IoBridge.isConnected(IoBridge.java:223)  
+E/unknown:React:     at libcore.io.IoBridge.connectErrno(IoBridge.java:161)  
+E/unknown:React:     at libcore.io.IoBridge.connect(IoBridge.java:112)  
+...
+E/unknown:React:  Caused by: libcore.io.ErrnoException: isConnected failed: ECONNREFUSED (Connection refused)  
+E/unknown:React:     at libcore.io.IoBridge.isConnected(IoBridge.java:208)  
+E/unknown:React:     at libcore.io.IoBridge.connectErrno(IoBridge.java:161)  
+E/unknown:React:     at libcore.io.IoBridge.connect(IoBridge.java:112)  
+E/unknown:React:     at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:192)  
+E/unknown:React:     at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:460)  
+E/unknown:React:     at java.net.Socket.connect(Socket.java:833)  
+
+
+adb reverse tcp:8081 tcp:8081
+
+
+2017/07/19
+
+
+ignite
+
+
+2017/07/24
+View 写的时候需要注意是大写开头的<View></View>而不是<view></view>
+
+2017/07/25
+p.s:state属性,主要用来存储组件自身需要的数据,每次数据的更新都是通过修改state属性的值,rn内部会监听state属性,一旦变化即会触发render方法更新dom
+# Create a new React Native App
+react-native init SimpleApp
+cd SimpleApp
+
+# Install the latest version of react-navigation from npm
+npm install --save react-navigation
+
+# Run the new app
+react-native run-android # or:
+react-native run-ios
+
+
+
+
+bundling failed: "Unable to resolve module `../../widget` from `C:\\Users\\yuerwang\\Desktop\\mywork\\Test\\PO\\src\\scene\\Home\\HomeScene.js`: could not re
+solve `C:\\Users\\yuerwang\\Desktop\\mywork\\Test\\PO\\src\\widget' as a folder: it did not contain a package, nor an index file"
+
+
+
+
+
+
+
+1.！！！！！路径写成这样会报错 icon_navigationItem_message_white@2x.png 必须要去掉后面的@符号，但是开源的代码中这样写是可以的（可能他是在MAC上写的）
+报的错是无法找到这个文件夹，很奇怪
+
+2. import { color,  NavigationItem } from '../../widget'也是报错，报的错也是找不到文件夹，必须拆开写成这样
+
+import NavigationItem from '../../widget/NavigationItem'
+import color from '../../widget/color'
+开源的代码上面的写法是可以的，不知道具体上面原因
+
+3.导入函数应该用{}包起来，import {Paragraph} from '../../widget/Text'
+
+4.关于import export 的解释http://es6.ruanyifeng.com/#docs/module#export
+
+5.const声明的变量只在当前代码块中有效

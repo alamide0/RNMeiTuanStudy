@@ -1,0 +1,54 @@
+一边敲代码一边学习的
+1.style(样式)
+    RN中使用样式
+    1.全局定义样式，可以被复用
+        import StyleSheet from 'react-native'
+
+        const styles = StyleSheet.create({
+
+        });
+    2.控件内部使用
+        <View style={{flex: 1, backgroundColor: 'powderblue'}} />
+
+
+2.Flex (弹性宽高)
+    flex 类似Android中的Weight，动态的设置宽高, flex: 1 ，即控件铺满整个剩下的空间（没有其它控件并列使用的情况）
+    <View style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor: 'powderblue'}} />
+        <View style={{flex: 2, backgroundColor: 'skyblue'}} />
+        <View style={{flex: 3, backgroundColor: 'steelblue'}} />
+      </View>
+
+
+3.Flex Direction（决定布局的主轴）
+     <View style={{flex: 1, flexDirection: 'row'}}>
+        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+        <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
+        <View style={{width: 50, height: 50, backgroundColor: 'steelblue'}} />
+      </View>
+
+4.Justify Content（决定其子元素沿着主轴的排列方式）
+
+    <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}>
+        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+        <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
+        <View style={{width: 50, height: 50, backgroundColor: 'steelblue'}} />
+      </View>
+
+5.Align Items(alignItems 决定其子元素沿着次轴的排列方式)
+
+    <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
+        <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
+        <View style={{width: 50, height: 50, backgroundColor: 'steelblue'}} />
+      </View>
+
