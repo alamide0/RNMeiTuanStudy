@@ -86,3 +86,14 @@ import color from '../../widget/color'
 4.关于import export 的解释http://es6.ruanyifeng.com/#docs/module#export
 
 5.const声明的变量只在当前代码块中有效
+
+6.注意 PropTypes的大小写问题
+
+    currentIndicatorStyle: View.propTypes.style,
+    onPageIndicatorPress: React.PropTypes.func
+
+7.判断一个组件是否加载
+    let icon = this.props.icon &&
+    <Image style={[styles.icon, this.props.iconStyle]}  source={this.props.icon}/>
+
+subtitle: `[${info.range}]${info.title}`,

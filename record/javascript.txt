@@ -1,0 +1,6 @@
+1. slice 方法
+    var fruits = ["Banana", "Orange", "Lemon", "Apple", "Mango"];
+    var citrus = fruits.slice(1,3);
+
+    result: Orange,Lemon
+这个方法就是切割对象用的，类似于Java中的subString，只不过在这边感觉更强大，不仅能切割字符串更能切割对象（数组）,值得注意的是含前不含后

@@ -52,3 +52,48 @@
         <View style={{width: 50, height: 50, backgroundColor: 'steelblue'}} />
       </View>
 
+6.  flexWrap流式布局样式(当一行排满的时候要求其自动换行)
+
+    flexWrap属性用来设置流式布局（当所有项不能显示在一行中时，换行显示）的样式，有如下几种选项：
+    nowrap（默认值）：不换行；
+    wrap：换行，新行在旧行下方；
+    wrap-reverse：换行，新行在旧行上方。
+    注意：flexWrap属性在iOS上可以正常设置，但在Android上如果不加额外的设置，则只会显示第一行，解决方法是添加style：alignItems: ’flex-start’
+
+7. PropTypes是用来校验数据的
+    组件的属性可以接受任意值，字符串、对象、函数等等都可以。有时，我们需要一种机制，验证别人使用组件时，提供的参数是否符合要求。
+    getDefaultProps 方法可以用来设置组件属性的默认值。
+    var MyTitle = React.createClass({
+    getDefaultProps : function () {
+    return {
+      title : 'Hello World'
+    };
+    },
+
+    render: function() {
+        return <h1> {this.props.title} </h1>;
+    }
+    });
+
+    ReactDOM.render(
+    <MyTitle />,
+    document.body
+    );
+    输出的结果 Hello world
+
+8.Touch系列按钮
+
+    TouchableWithoutFeedback：响应用户的点击事件，如果你想在处理点击事件的同时不显示任何视觉反馈，使用它是个不错的选择。
+    TouchableHighlight：在TouchableWithoutFeedback的基础上添加了当按下时背景会变暗的效果。
+    TouchableOpacity：相比TouchableHighlight在按下去会使背景变暗的效果，TouchableOpacity会在用户手指按下时降低按钮的透明度，而不会改变背景的颜色。
+    TouchableNativeFeedback：在Android上还可以使用TouchableNativeFeedback，它会在用户手指按下时形成类似水波纹的视觉效果。注意，此组件只支持Android。
+
+9. ScrollView计算当前页
+    let x = e.nativeEvent.contentOffset.x  获取滑动的偏移量
+    let currentPage = Math.round(x / screen.width)
+
+
+10.
+    当你需要设置多个属性类的时候，可以传入一个数组
+    <View style={[style.base,style.backgroundColor]} />
+    两个样式冲突的情况下以右边的优先
