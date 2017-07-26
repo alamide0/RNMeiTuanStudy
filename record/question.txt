@@ -97,3 +97,21 @@ import color from '../../widget/color'
     <Image style={[styles.icon, this.props.iconStyle]}  source={this.props.icon}/>
 
 subtitle: `[${info.range}]${info.title}`,
+
+8. 版本需要注意的问题
+    java.lang.UnsupportedClassVersionError: com/android/build/gradle/AppPlugin : Unsupported major.minor version 52.0
+    这个原因是JDK版本错误，需要升级版本
+
+9.导工程的时候注意npm install 及 ADROID_HOME(即SDK)的设置
+
+10. 查看端口号及杀进程
+    netstat -ano|findstr "8081"
+    taskkill /pid 9380 -f
+
+11. Unable to load script from assets 'index.android.bundle'.Make sure your bundle is packaged
+    correctly or you're running a packager server.
+
+    Answer:
+    1.(in project directory) mkdir android/app/src/main/assets
+    2.react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+    3.react-native run-android
