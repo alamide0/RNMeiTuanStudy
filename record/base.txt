@@ -97,3 +97,5 @@
     当你需要设置多个属性类的时候，可以传入一个数组
     <View style={[style.base,style.backgroundColor]} />
     两个样式冲突的情况下以右边的优先
+
+11.ref 回调属性

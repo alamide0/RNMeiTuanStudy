@@ -4,25 +4,26 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { AppRegistry,} from 'react-native';
 import {StackNavigator} from 'react-navigation'
 import HomeScene from './src/scene/Home/HomeScene';
+import RootScene from './src/RootScene'
 
-export default class PO extends Component {
+export default class PO extends PureComponent {
   render() {
     return (
-      <HomeScene/>
+      <RootScene/>
     );
   }
 }
 
 
-const Simple = StackNavigator(
-    {
-        Home: {screen: HomeScene},
-    }
-);
+// const Simple = StackNavigator(
+//     {
+//         Home: {screen: HomeScene},
+//     }
+// );
 
 
-AppRegistry.registerComponent('PO', () => Simple);
+AppRegistry.registerComponent('PO', () => PO);

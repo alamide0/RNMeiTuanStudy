@@ -75,6 +75,11 @@ solve `C:\\Users\\yuerwang\\Desktop\\mywork\\Test\\PO\\src\\widget' as a folder:
 1.！！！！！路径写成这样会报错 icon_navigationItem_message_white@2x.png 必须要去掉后面的@符号，但是开源的代码中这样写是可以的（可能他是在MAC上写的）
 报的错是无法找到这个文件夹，很奇怪
 
+    报的错是
+    bundling failed: "Unable to resolve module `./img/tabbar/pfb_tabbar_homepage@2x.png` from `C:\\Users\\yuerwang\\Desktop\\mywork\\Test\\PO\\src\\R
+    ootScene.js`: could not resolve `C:\\Users\\yuerwang\\Desktop\\mywork\\Test\\PO\\src\\img\\tabbar\\pfb_tabbar_homepage@2x.png' as a folder: it did not c
+    ontain a package, nor an index file"
+
 2. import { color,  NavigationItem } from '../../widget'也是报错，报的错也是找不到文件夹，必须拆开写成这样
 
 import NavigationItem from '../../widget/NavigationItem'
