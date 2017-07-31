@@ -13,7 +13,7 @@ class NearbyHeaderView extends PureComponent{
             <View style={styles.container}>
                 {this.props.titles.map((title, i) => (
                     <TouchableOpacity
-                        style={[{ backgroundColor: this.props.selectedIndex === i ? '#FE566D' : 'white'}, style.item]}
+                        style={[{ backgroundColor: this.props.selectedIndex === i ? '#FE566D' : 'white'}, styles.item]}
                         key={i}
                         onPress={()=> this.props.onSelected(i)}
                     >

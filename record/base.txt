@@ -52,7 +52,7 @@
         <View style={{width: 50, height: 50, backgroundColor: 'steelblue'}} />
       </View>
 
-6.  flexWrap流式布局样式(当一行排满的时候要求其自动换行)
+6.  flexWrap流式布局样式(当一行排满的时候要求其自动换行)......
 
     flexWrap属性用来设置流式布局（当所有项不能显示在一行中时，换行显示）的样式，有如下几种选项：
     nowrap（默认值）：不换行；
@@ -99,3 +99,12 @@
     两个样式冲突的情况下以右边的优先
 
 11.ref 回调属性
+
+    ref 回调属性
+    ref 属性可以是一个回调函数，而不是一个名字。这个回调函数在组件安装后立即执行。
+    被引用的组件作为一个参数传递，且回调函数可以立即使用这个组件，或保存供以后使用(或实现这两种行为)。
+
+12.创建一个工程
+    npm init Pregnotice
+   导入一个包
+    npm install --save react-navigation
