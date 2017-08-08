@@ -108,3 +108,10 @@
     npm init Pregnotice
    导入一个包
     npm install --save react-navigation
+
+13.摘自官方原话
+    Android Studio installs the latest Android SDK by default. Building a React Native app with native code, 
+    however, requires the Android 6.0 (Marshmallow) SDK in particular. Additional Android SDKs can be installed 
+    through the SDK Manager in Android Studio.
+
+    React Native ，默认使用Android 6.0(API 23)来编译，其它版本之前编译发现了各种错误，巨坑。

@@ -100,7 +100,7 @@ class HomeScene extends PureComponent {
                         title: info.mname, 
                         subtitle: `[${info.range}]${info.title}`,
                         price: info.price
-                    }
+                    }   
                 }
             )
 

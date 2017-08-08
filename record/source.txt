@@ -1,0 +1,17 @@
+1.关于广告轮播图的有两个
+    1.ViewPager
+    2.Swiper
+第二个性能更强大，第一个不好，尤其是在边界处理上，比如当轮播图页数为1的情况下，便出现了异常。
+
+用例： 
+
+    npm install react-native-swiper --save
+
+     <Swiper
+        style={styles.banner}
+        autoplay={true}
+        height={screen.width * 234 / 750}
+        showsButtons={false}
+    >
+        {bannerCells}
+    </Swiper>

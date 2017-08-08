@@ -120,3 +120,60 @@ subtitle: `[${info.range}]${info.title}`,
     1.(in project directory) mkdir android/app/src/main/assets
     2.react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
     3.react-native run-android
+12.为什么下面这种加载不出来图片？？？？？？！！！！！！！！
+            <TouchableOpacity style={styles.container}>
+                    {icon}
+                    {leftText}
+            </TouchableOpacity>
+
+            <TouchableOpacity >
+                <View style={styles.container}>
+                    {icon}
+                    {leftText}
+                </View>
+                
+            </TouchableOpacity>
+    不知道原因，但是以后写父控件的时候一定要注意给父控件样式
+
+13.拼写错误！！！！！！！！！！
+    在这个问题上栽了很多次，个人感觉出现这个问题的原因是
+        1.JavaScript的语言特性（弱类型）
+        2.集成开发环境没有检查错误的功能 
+        3.也是最主要的原因，个人没有注意检查
+
+13.push错误
+
+        for(let i=0; i<bannerList.length; i++){
+            bannerCells.push(<Image source={{ uri: bannerList[i].img }} style={styles.banner} key={i}/>)
+        }
+        // bannerCells.push(bannerList.map((info) => {
+        //     return
+        //     <Image source={{ uri: info.img }} style={styles.banner} key={info.img}/>
+
+        // }));
+    上面的正常，下面的不行，暂时不知道原因
+
+14.有时候运行会出现Object Undefined 
+   
+   出现这个问题的原因一般是因为没有使用 bind(this)
+
+15.RN WebView返回最后一层页面时出现 about:blank
+
+    这里一般出现的原因是因为
+
+    <WebView
+        ref={WEBVIEW_REF}
+        source={this.state.source}
+        style={styles.webView}
+        onLoadEnd={(e) => this.onLoadEnd(e)}
+        onNavigationStateChange={this.onNavigationChange.bind(this)}
+        domStorageEnabled={true}/>
+
+    原因： 在设置初始state的时候默认写了 state={source: {}}，而且在第一次render的时候还没有设置正确的source，
+    这样就造成了WebView直接去加载一个空页面即上文提到的(about: blank)，而后在设置正确的source（我是在componentDidMount()中设置的）
+    WebView又一次加载新页面，即在进入这个页面后其实是加载了两次，所以返回的时候会显示about: blank页面。
+
+    解决方法：避免加载source: {}， 必须在render()方法之前把正确的source设置好，查看React生命周期 constructor() 及 componentWillMount()
+    在render() 方法之前执行。我选择在constructor中设置好正确的source。
+
+    调试、运行：发现问题已经解决

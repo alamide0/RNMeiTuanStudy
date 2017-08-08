@@ -50,7 +50,7 @@ const Tab = TabNavigator(
     {
         Home:{
             screen: HomeScene,
-            navigationOptions:({navigation}) => ({
+            navigationOptions:({navigation}) =>     ({
                 tabBarLabel: '团购',
                 tabBarIcon:({focused, tintColor})=>(
                     <TabBarItem

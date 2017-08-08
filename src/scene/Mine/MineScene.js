@@ -136,7 +136,7 @@ class MineScene extends PureComponent{
 }
 
 const styles = StyleSheet.create({
-    header: {
+        header: {
         backgroundColor: color.theme,
         paddingBottom: 20
     },
