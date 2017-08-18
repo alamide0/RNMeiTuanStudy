@@ -7,6 +7,7 @@ import HomeScene from './scene/Home/HomeScene'
 import MineScene from './scene/Mine/MineScene'
 import NearbyScene from './scene/Nearby/NearbyScene'
 import OrderScene from './scene/Order/OrderScene'
+import AllKinds from './scene/kind/AllKindsScene'
 
 import TabBarItem from './widget/TabBarItem'
 import color from './widget/color'
@@ -49,7 +50,7 @@ class RootScene extends PureComponent{
 const Tab = TabNavigator(
     {
         Home:{
-            screen: HomeScene,
+            screen: AllKinds,
             navigationOptions:({navigation}) =>     ({
                 tabBarLabel: '团购',
                 tabBarIcon:({focused, tintColor})=>(

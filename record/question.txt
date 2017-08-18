@@ -14,51 +14,47 @@
 这边要写成这样，如果这边写的不是这样，需要重新安装。先去工程目录下删除node_modules这个文件夹，然后将package.json中改成上面的样子。然后在终端
 （Terminal）中输入npm install 或者不删除 直接改过之后 npm update
 5.
-AppRegistry.registerComponent('reactttt', () => HelloWorld);
-"name": "reactttt",
-mReactRootView.startReactApplication(mReactInstanceManager, "reactttt", null);
-这三处需要一致
+    AppRegistry.registerComponent('reactttt', () => HelloWorld);
+    "name": "reactttt",
+    mReactRootView.startReactApplication(mReactInstanceManager, "reactttt", null);
+    这三处需要一致
+
+    补： 然而好像不一致也行
 
 6.
-E/unknown:React: Unable to download JS bundle  
-E/unknown:React: java.net.ConnectException: failed to connect to localhost/127.0.0.1 (port 8081) after 5000ms: isConnected failed: ECONNREFUSED (Connection refused)  
-E/unknown:React:     at libcore.io.IoBridge.isConnected(IoBridge.java:223)  
-E/unknown:React:     at libcore.io.IoBridge.connectErrno(IoBridge.java:161)  
-E/unknown:React:     at libcore.io.IoBridge.connect(IoBridge.java:112)  
-...
-E/unknown:React:  Caused by: libcore.io.ErrnoException: isConnected failed: ECONNREFUSED (Connection refused)  
-E/unknown:React:     at libcore.io.IoBridge.isConnected(IoBridge.java:208)  
-E/unknown:React:     at libcore.io.IoBridge.connectErrno(IoBridge.java:161)  
-E/unknown:React:     at libcore.io.IoBridge.connect(IoBridge.java:112)  
-E/unknown:React:     at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:192)  
-E/unknown:React:     at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:460)  
-E/unknown:React:     at java.net.Socket.connect(Socket.java:833)  
+    E/unknown:React: Unable to download JS bundle  
+    E/unknown:React: java.net.ConnectException: failed to connect to localhost/127.0.0.1 (port 8081) after 5000ms: isConnected failed: ECONNREFUSED (Connection refused)  
+    E/unknown:React:     at libcore.io.IoBridge.isConnected(IoBridge.java:223)  
+    E/unknown:React:     at libcore.io.IoBridge.connectErrno(IoBridge.java:161)  
+    E/unknown:React:     at libcore.io.IoBridge.connect(IoBridge.java:112)  
+    ...
+    E/unknown:React:  Caused by: libcore.io.ErrnoException: isConnected failed: ECONNREFUSED (Connection refused)  
+    E/unknown:React:     at libcore.io.IoBridge.isConnected(IoBridge.java:208)  
+    E/unknown:React:     at libcore.io.IoBridge.connectErrno(IoBridge.java:161)  
+    E/unknown:React:     at libcore.io.IoBridge.connect(IoBridge.java:112)  
+    E/unknown:React:     at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:192)  
+    E/unknown:React:     at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:460)  
+    E/unknown:React:     at java.net.Socket.connect(Socket.java:833)  
 
 
-adb reverse tcp:8081 tcp:8081
+7. 加载JSBundle失败 
+    adb reverse tcp:8081 tcp:8081
 
 
-2017/07/19
-
-
-ignite
-
-
-2017/07/24
-View 写的时候需要注意是大写开头的<View></View>而不是<view></view>
+    View 写的时候需要注意是大写开头的<View></View>而不是<view></view>
 
 2017/07/25
-p.s:state属性,主要用来存储组件自身需要的数据,每次数据的更新都是通过修改state属性的值,rn内部会监听state属性,一旦变化即会触发render方法更新dom
-# Create a new React Native App
-react-native init SimpleApp
-cd SimpleApp
+    p.s:state属性,主要用来存储组件自身需要的数据,每次数据的更新都是通过修改state属性的值,rn内部会监听state属性,一旦变化即会触发render方法更新dom
+    # Create a new React Native App
+    react-native init SimpleApp
+    cd SimpleApp
 
-# Install the latest version of react-navigation from npm
-npm install --save react-navigation
+    # Install the latest version of react-navigation from npm
+    npm install --save react-navigation
 
-# Run the new app
-react-native run-android # or:
-react-native run-ios
+    # Run the new app
+    react-native run-android # or:
+    react-native run-ios
 
 
 
@@ -82,9 +78,9 @@ solve `C:\\Users\\yuerwang\\Desktop\\mywork\\Test\\PO\\src\\widget' as a folder:
 
 2. import { color,  NavigationItem } from '../../widget'也是报错，报的错也是找不到文件夹，必须拆开写成这样
 
-import NavigationItem from '../../widget/NavigationItem'
-import color from '../../widget/color'
-开源的代码上面的写法是可以的，不知道具体上面原因
+    import NavigationItem from '../../widget/NavigationItem'
+    import color from '../../widget/color'
+    开源的代码上面的写法是可以的，不知道具体上面原因
 
 3.导入函数应该用{}包起来，import {Paragraph} from '../../widget/Text'
 
@@ -177,3 +173,286 @@ subtitle: `[${info.range}]${info.title}`,
     在render() 方法之前执行。我选择在constructor中设置好正确的source。
 
     调试、运行：发现问题已经解决
+
+    补：发现了一种更好的解决方案
+
+     let contentView=this.state.show && <WebView
+                    ref={WEBVIEW_REF}
+                    source={this.state.source}
+                    style={styles.webView}
+                    onLoadEnd={(e) => this.onLoadEnd(e)}
+                    onNavigationStateChange={this.onNavigationChange.bind(this)}
+                    domStorageEnabled={true}
+                />
+        return (
+            <View style={styles.container}>
+                {contentView}
+            </View>
+        )
+
+    利用JavaScript的语言特性，这样就可以完美解决上面的问题，当正确赋值的时候，设置{show: true}即可
+
+16.为什么应用没有加载出正确的页面
+    因为你傻，npm start要在正确的目录下，如果加载不出来看看是不是启动的目录错了！！
+
+
+17.关于在WebActivity中时，返回键出现直接退出整个页面的，之后再点击直接崩溃的解决方案
+
+public class WebActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
+    private ReactRootView mReactRootView;
+    private ReactInstanceManager mReactInstanceManager;
+
+    @Override
+    protected void onCreate(@android.support.annotation.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mReactRootView = new ReactRootView(this);
+        mReactInstanceManager = ((ReactApplication)getApplication()).getReactNativeHost().getReactInstanceManager();
+        mReactRootView.startReactApplication(mReactInstanceManager, "WebScene", null);
+        setContentView(mReactRootView);
+    }
+
+
+    @Override
+    public void invokeDefaultOnBackPressed() {
+
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (mReactInstanceManager != null) {
+            mReactInstanceManager.onHostPause(this);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (mReactInstanceManager != null) {
+            mReactInstanceManager.onHostResume(this, this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mReactInstanceManager != null) {
+            mReactInstanceManager.onHostDestroy();
+        }
+    }
+}
+    源代码如下
+    这个原因肯能是因为没有捕捉返回键事件的原因，这里修改代码为这样就解决了这个问题
+
+
+    public class WebActivity extends ReactFragmentActivity {
+        @Override
+        protected String getMainComponentName() {
+            return "WebScene";
+        }
+    }
+
+    而且下面还很简洁，下面这种写法才是正确的写法，但是上面的那种写法也有它特定的适用场景，
+    比如业务需要在一个原生的Activity或Fragment页面中嵌入React Native的页面，那么这时就需要用到
+    ReactRootView了，这时也应该需要注意一下返回键，但是应该没什么大问题，因为返回键事件此时需要
+    原生的界面来处理了，与React Native页面无关
+
+18.React Native 与 原生通信需要注意的地方
+    注意ReactInstanceManager实例化的差别，看ReactActivity的实现源码，你就会发现问题（主要是ReactInstanceManager的实例化差别）
+
+19.AppRegistry可以注册多个组件
+
+
+20.很重要的小技巧
+
+    React Native 的状态刷新是由状态机来控制的，这是很好的，但是我现在遇到了问题
+    我在做一个类似于RadioButton的过程中
+    先讲下我的设计思路：
+        用FlatList来作为RadioGroup，用View来作为RadioButton。先在将这个大组件分为两个模块，即FlatList和Cell两个模块。
+        在RadioGroup中由state保存各个RadioButton的状态及属性（text, clicked）。当点击一个RadioButton的时候将此RadioButton
+        的clicked设为true,其余的RadioButton设置为clicked=false。然后通知RadioGroup刷新所有子RadioButton。此时问题来了！！
+        你会发现即使重新设置RadioGroup中this.setState({items: data})，根本不刷新。什么鬼！！仔细想一想，RN的状态机判断数据
+        是否发生变化的依据可能是根据变量的地址值（这里做一下猜测，根据的数组中的每一个元素的地址），虽然你改变item的clicked,但是
+        并没有改变item在内存中的地址。好家伙，还有这样的操作！！（坑否？）那么解决的思路就有了，要改变地址是吧？那就来吧。
+
+        var data = this.state.items.map((info) =>{
+            return {
+                title: info.title,
+                clicked: info.clicked,
+            }
+        })
+
+        来，再试一下，我草居然成功了。可能猜测还真的是对的，具体到底猜测的对不对，等有时间了再去研究吧！
+
+
+        贴一下源码吧，省的以后忘了
+
+
+        补： 
+            FlatList中有一个extraData()可以完美解决上面的问题
+
+            A marker property for telling the list to re-render (since it implements PureComponent). 
+            If any of your renderItem, Header, Footer, etc. functions depend on anything outside of the data prop,
+            stick it here and treat it immutably.
+
+            这是用来通知list去重新刷新的，这里这个函数可以很好的解决上面的问题。只需要去设置这个属性，它会比较前后的值是否一样，
+            不一样就去刷新。
+
+    // resetAllItemState(item){
+    //     var position = this.state.items.indexOf(item);
+    //     if(position === this.state.lastClicked){
+    //         return;
+    //     }
+    //     var data = this.state.items.map((info)=>{
+    //         return{
+    //             title: info.title,
+    //             clicked: info.clicked,
+    //         }
+    //     });
+
+    //     for(let v of data){
+    //         v.clicked = false;
+    //     }
+    //     data[position].clicked = true;
+    //     this.setState({
+    //         items: data,
+    //         lastClicked: position,
+    //     })
+
+    //     this.props.onPress(item);
+    // }
+        
+class LeftItemsComponent extends PureComponent{
+
+    constructor(props){
+        super(props)
+        this.state={
+            items: [],
+        }
+    }
+
+    onPress(item){
+        this.resetAllItemState(item);
+        this.props.onPress(item);
+    }
+
+    resetAllItemState(item){
+        var position = this.state.items.indexOf(item);
+        var data = this.state.items.map((info)=>{
+            return{
+                title: info.title,
+                clicked: info.clicked,
+            }
+        });
+
+        for(let v of data){
+            v.clicked = false;
+        }
+        data[position].clicked = true;
+        this.setState({
+            items: data,
+        })
+    }
+
+    componentWillReceiveProps(nextProps){
+        var items = nextProps.items;
+        if(items){
+            this.setState({
+                items: items,
+            })
+        }
+    }
+
+    keyExtractor(item, index){
+        // alert('index='+index)
+        return index;
+    }
+
+    render(){
+        return (
+            <FlatList
+                data={this.state.items}
+                keyExtractor={this.keyExtractor} 
+                showsVerticalScrollIndicator={false}
+                renderItem={({item}) => <LeftItemsCell info={item} onPress={this.onPress.bind(this)}/>}
+            />
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+
+})
+
+export default LeftItemsComponent;   
+
+import React, {PureComponent} from 'react';
+import {View, StyleSheet, Text, TouchableWithoutFeedback} from 'react-native'
+import color from '../../widget/color'
+import screen from '../../common/screen'
+
+class LeftItemsCell extends PureComponent{
+
+    constructor(props){
+        super(props) 
+        this.state={
+            clicked: false,
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            clicked: nextProps.info.clicked,
+        })
+    }
+
+    render(){
+        let item = this.props.info;
+        let clickedStyle = this.state.clicked ? {backgroundColor: color.white} : {};
+        return(
+            <TouchableWithoutFeedback style={[styles.container, clickedStyle]} onPress={() => this.props.onPress(item)}>
+                <View style={[styles.container, clickedStyle]}>
+                    <Text style={styles.text}>{item.title}</Text>
+                </View>
+                
+            </TouchableWithoutFeedback>
+        )
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: color.deaultBackground,
+        width: screen.width * 200 / 750,
+        height: screen.width * 100 / 750,
+    },
+    text: {
+        color: color.kindTextColor,
+        fontSize: 12,
+    }
+});
+
+export default LeftItemsCell;     
+
+21. 关于FlatList中设置renderItem出现无法理解的错误！
+
+    renderItem={({info}) => <LeftItemsCell info={info} onPress={this.onPress.bind(this)}/>}
+    renderItem={({item}) => <LeftItemsCell info={item} onPress={this.onPress.bind(this)}/>}
+
+22.为什么FlatList在超出屏幕的部分无法滚动？
+
+    首先你得搞清楚你所谓的不可滑动是哪种不可滑动。
+        1.由于FlatList的父控件超出屏幕，例如有一个垂直布局，其中有两个子组件(1)Header (2)<View>FlatList<View>
+        其中屏幕高600。Header高400，<View>高800。那么必然<View>会超出屏幕600。现在我们假设FlatList的有效内容高
+        400，其中有200超出屏幕。此时滑动当然是“无法滚动的”，因为对于FlatList来讲，其实它的内容都是可视的，只不过超出了
+        屏幕而已，但那也是“可视的”！所以才会滑不动。那么解决的方法就是设置<View>的高度为200，或者{flex:1}，这样你的
+        FlatList就可以正常滑动了。
+        2.其它原因暂时没遇到过。
+23.设置{flex: 1}无效？？
+
+    设置无效的原因通常是因为你没有设置父控件的高度引起的，父控件高度不确定，当然自控不知道自己到底应该占多大！

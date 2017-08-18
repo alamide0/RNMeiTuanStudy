@@ -4,3 +4,6 @@
 
     result: Orange,Lemon
 这个方法就是切割对象用的，类似于Java中的subString，只不过在这边感觉更强大，不仅能切割字符串更能切割对象（数组）,值得注意的是含前不含后
+
+2.Java的原型链
+    http://www.ruanyifeng.com/blog/2011/06/designing_ideas_of_inheritance_mechanism_in_javascript.html
