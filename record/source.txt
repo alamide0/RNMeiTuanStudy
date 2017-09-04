@@ -15,3 +15,11 @@
     >
         {bannerCells}
     </Swiper>
+
+2.CodePush Server的搭建(easy)
+    1.http://www.jianshu.com/p/eb7fdee307dc
+    2.http://www.jianshu.com/p/eafe0136d3a3
+    3.https://github.com/Microsoft/code-push/blob/master/cli/README-cn.md#%E5%BA%94%E7%94%A8%E7%AE%A1%E7%90%86
+    4.https://github.com/lisong/code-push-server
+
+四个博文搞定，注意的点就是KEY
