@@ -8,8 +8,8 @@ class SearchComponent extends PureComponent {
         return (
             <View style={styles.container}>
                 <TouchableOpacity style={styles.item}>
-                    <Image style={{marginRight: 9}} source={require('../../img/Home/icon_homepage_search.png')}/>
-                    <Text>搜索你的孕期必备</Text>
+                    <Image style={styles.img} source={require('../../img/Home/icon_homepage_search.png')}/>
+                    <Text style={styles.text}>搜索你的孕期必备</Text>
                 </TouchableOpacity>
             </View>
 
@@ -30,14 +30,21 @@ const styles = StyleSheet.create({
         
         marginRight: 30,
         marginLeft: 30,
-        marginTop: 15,
-        marginBottom: 15,
+        height: screen.width * 88 / 750  - 20,
         backgroundColor: color.deaultBackground,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
         flex: 1,
         borderRadius: (screen.width * 88 / 750)
+    },
+    img: {
+        width: 15,
+        height: 15,
+    },
+    text: {
+        fontSize: 11,
+        marginLeft: 9,
     }
 })
 

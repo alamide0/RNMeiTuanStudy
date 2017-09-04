@@ -1,18 +1,19 @@
-import React, {PureComponent} from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import React, { PureComponent } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import LeftItemsCell from './LeftItemsCell'
+import color from '../../widget/color'
 
-class LeftItemsComponent extends PureComponent{
+class LeftItemsComponent extends PureComponent {
 
-    constructor(props){
+    constructor(props) {
         super(props)
-        this.state={
+        this.state = {
             items: [],
             lastClicked: 0
         }
     }
 
-    onPress(item, index){
+    onPress(item, index) {
         this.setState({
             lastClicked: index,
         })
@@ -43,35 +44,38 @@ class LeftItemsComponent extends PureComponent{
     //     this.props.onPress(item);
     // }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         var items = nextProps.items;
-        
-        if(items && items.length != this.state.items.length){
+
+        if (items && items.length != this.state.items.length) {
             this.setState({
                 items: items,
             })
         }
     }
 
-    keyExtractor(item, index){
+    keyExtractor(item, index) {
         return index;
     }
 
-    render(){
+    render() {
         return (
-            <FlatList
-                data={this.state.items}
-                extraData={this.state.lastClicked}
-                keyExtractor={this.keyExtractor} 
-                showsVerticalScrollIndicator={false}
-                renderItem={({item,index}) => <LeftItemsCell info={item} index={index} selected={this.state.lastClicked===index} onPress={this.onPress.bind(this)}/>}
-            />
+            <View style={{ flex: 1, backgroundColor: color.deaultBackground }}>
+                <FlatList
+                    data={this.state.items}
+                    extraData={this.state.lastClicked}
+                    keyExtractor={this.keyExtractor}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={({ item, index }) => <LeftItemsCell info={item} index={index} selected={this.state.lastClicked === index} onPress={this.onPress.bind(this)} />}
+                />
+            </View>
+
         );
     }
 }
 
 const styles = StyleSheet.create({
-    
+
 })
 
 export default LeftItemsComponent;

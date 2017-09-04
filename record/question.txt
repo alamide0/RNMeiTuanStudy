@@ -148,6 +148,10 @@ subtitle: `[${info.range}]${info.title}`,
 
         // }));
     上面的正常，下面的不行，暂时不知道原因
+    现在知道了,bannerList.map()出来的已经是一个数组了，你再去push那肯定是不对的！！！
+    你可以直接bannerCells = bannerList.map((info) => {
+        return <Image source={{uri: info,img}} style={styles.banner} key={info.img}/>
+    })
 
 14.有时候运行会出现Object Undefined 
    
@@ -444,6 +448,9 @@ export default LeftItemsCell;
     renderItem={({info}) => <LeftItemsCell info={info} onPress={this.onPress.bind(this)}/>}
     renderItem={({item}) => <LeftItemsCell info={item} onPress={this.onPress.bind(this)}/>}
 
+    现在懂了，假如有一个对象， info,其中有属性 age, height。那么{age, height}=info,即为拿出其中对应的属性。
+    而不是需要传统的 age=info.age, height=info.height
+
 22.为什么FlatList在超出屏幕的部分无法滚动？
 
     首先你得搞清楚你所谓的不可滑动是哪种不可滑动。
@@ -456,3 +463,133 @@ export default LeftItemsCell;
 23.设置{flex: 1}无效？？
 
     设置无效的原因通常是因为你没有设置父控件的高度引起的，父控件高度不确定，当然自控不知道自己到底应该占多大！
+
+24.设置高度填充父控件无效？？
+
+<ScrollView>
+    <View style={styles.rightContainer}>
+        <View style={{ flex: 1, backgroundColor: color.white }}>
+            <Text>{this.state.rightContentTitle}</Text>
+        </View>
+
+    </View>
+</ScrollView>
+
+没有设置ScrollerView 的高度与大小，所以无效！！！
+父，排列方式为‘row’
+子 flex: 1
+则子的高度默认为父控件的高度
+
+25.
+ let img = info.tagName && info.tagName.length !== 0 ? (
+      <View style={styles.bottomImg}>
+        <Text style={{color: color.white, fontSize: 12}}>{info.tagName}</Text>
+      </View>) : null
+
+vs 
+
+ let img = info.tagName && info.tagName.length !== 0 && (
+      <View style={styles.bottomImg}>
+        <Text style={{color: color.white, fontSize: 12}}>{info.tagName}</Text>
+      </View>)
+为什么上面的可以，但是下面的不行？？
+
+26.关于Android的返回键监听（从Fragment中监听返回键且要原生界面显示某些组件，恶心，搞的我恶心）
+
+首先得明白我们的应用与一般的RN应用的区别
+我们的应用的RN页面是嵌在Fragment中的，而Fragment无法监听返回键，只能由它的宿主Activity来监听，那么监听事件只能写在Activity中。
+而一般的应用是直接继承ReactActivity的，它们可以直接监听，而且ReactActivity内部也封装好了这些方法（可以自己去阅读源码）。（这里还得
+注意一下，ReactActivity中调用了在Application中实现的
+
+ ReactInstanceManagerBuilder builder = ReactInstanceManager.builder()
+      .setApplication(mApplication)
+      .setJSMainModuleName(getJSMainModuleName())
+      .setUseDeveloperSupport(getUseDeveloperSupport())
+      .setRedBoxHandler(getRedBoxHandler())
+      .setUIImplementationProvider(getUIImplementationProvider())
+      .setInitialLifecycleState(LifecycleState.BEFORE_CREATE);
+
+    for (ReactPackage reactPackage : getPackages()) {
+      builder.addPackage(reactPackage);
+    }
+
+    String jsBundleFile = getJSBundleFile();
+    if (jsBundleFile != null) {
+      builder.setJSBundleFile(jsBundleFile);
+    } else {
+      builder.setBundleAssetName(Assertions.assertNotNull(getBundleAssetName()));
+    }
+    return builder.build();
+
+    可以看到这里绑定了原生与RN的通信方法，而React-Native中文指导文档中实现的方法是无法实现与原生通信的，这里要稍微注意一下
+    mReactInstanceManager = ((ReactApplication)getActivity().getApplication()).getReactNativeHost().getReactInstanceManager();
+    所以这里我仿照了源码中实现的方法，然后就可以实现通信了，
+    我上面应该介绍过
+）
+这里同样去阅读源码可以发现解决的方案
+    public boolean onRNBackPressed() {
+        if (((ReactApplication)getApplication()).getReactNativeHost().hasInstance()) {
+            ((ReactApplication)getApplication()).getReactNativeHost().getReactInstanceManager().onBackPressed();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onBackPressedSupport() {
+
+        if(!isRNBack || !onRNBackPressed()) {
+            if (exitTime != 0 && System.currentTimeMillis() - exitTime < 2000) {
+                super.onBackPressedSupport();
+            } else {
+                exitTime = System.currentTimeMillis();
+                ToastHelper.showToast(this, getString(R.string.app_exit));
+            }
+        }
+    }
+
+    fragment中的返回方法什么也不需要做
+
+这里是我实现的方法if(!isRNBack || !onRNBackPressed())用来保证退出到最外层的时候，把返回键的控制权交给原生应用
+
+那相应的RN中的写法为这样
+ 1.。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。   
+    const defaultStateAction = Navigator.router.getStateForAction  
+
+    Navigator.router.getStateForAction = (action,state) => {  
+        if(state && action.type === NavigationActions.BACK && state.routes.length === 2) {  
+        let b =defaultStateAction(action,state);
+        ControlBottomBar.show()
+        return b  
+     }  
+        return defaultStateAction(action,state)  
+    }; 
+
+这是第一种方案，我采用的是这种方案。原因是我需要知道现在页面的具体位置，即到底是不是最外层。这样做的原因是应用的要求，因为我们需要控制底部的BottomBar
+，所以我采用这种方案。
+2.。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。
+componentDidMount () {
+    this.syncImmediate()
+    BackHandler.addEventListener('hardwareBackPress', this._onBackAndroid );  
+  }
+
+  componentUnWillMount(){  
+    BackHandler.addEventListener('hardwareBackPress', this._onBackAndroid);  
+   }  
+
+  
+   _onBackAndroid=()=>{  
+     Navigator.router.getStateForAction
+     let now = new Date().getTime();  
+     return false 
+   } 
+   这种方案当不需要原生界面做出某种响应时适用。
+
+这里需要注意的是，我之前理解的返回键监听是在每个页面上设置监听事件，但是这样的做法是错误的。同样只需要注册一次，
+在根上设置监听就好了。貌似只要写了监听事件，不做任何多余的操作，自动执行页面返回。有时候也可以在某些需要监听的页面
+上设置监听，但是这里需要注意的是。拿上面的方法_onBackAndroid()来举例.1.返回false，则继续执行父界面的BackHandler.addEventListener
+2.返回true,则移除父界面的BackHandler.addEventListener，所以你会发现点击返回键无效的情况
+
+以上就是本次Android返回键的处理方案。
+总结：多看源码，多总结。为什么之前会每个页面都监听一次返回键？还不是因为看的少。特别需要注意的点就是ReactActivity与Fragment等中
+嵌入RN的区别，有问题就去看源码，这在任何时候都是正确的。（read the fucking code, 太粗暴了。。。）

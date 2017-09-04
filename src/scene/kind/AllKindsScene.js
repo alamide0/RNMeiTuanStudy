@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
-import { FlatList, View, StyleSheet, Text, ScrollView ,TextInput} from 'react-native';
+import { FlatList, View, StyleSheet, Text, ScrollView, TextInput } from 'react-native';
 import { StackNavigator } from 'react-navigation'
 import LeftItemsComponent from './LeftItemsComponent'
 import color from '../../widget/color'
 import screen from '../../common/screen'
 import SearchComponent from './SearchComponent'
+import RightComponent from './RightComponent'
+import api from '../../api'
 
 class AllKinds extends PureComponent {
     static navigationOptions = ({ navigation }) => ({
@@ -17,11 +19,37 @@ class AllKinds extends PureComponent {
         this.state = {
             leftItems: [],
             rightContentTitle: '',
+            rightItems: [],
         }
     }
 
     componentDidMount() {
         this.getLeftItems();
+        this.getRightItems();
+    }
+
+    async getRightItems(){
+        let response = await fetch(api.find);
+        let json = await response.json();
+
+        let dataList = json.data.yuedu.map((info) => {
+            return {
+                title: info.title,
+                img: info.image,
+            }
+        })
+
+        dataList.sort(() => 0.5 - Math.random());
+
+        let info = dataList[0];
+        for(let i=0; i<20; i++){
+           dataList.push(info)
+        }
+
+    
+        this.setState({
+            rightItems: dataList,
+        })
     }
 
     getLeftItems() {
@@ -45,22 +73,19 @@ class AllKinds extends PureComponent {
     onLeftItemPress(item) {
         this.setState({
             rightContentTitle: item.title,
-        })
+        });
+        this.getRightItems();
     }
 
     render() {
         return (
             <View style={styles.outer}>
-                <SearchComponent/>
+                <SearchComponent />
                 <View style={styles.container}>
                     <View style={styles.leftContainer}>
                         <LeftItemsComponent items={this.state.leftItems} onPress={this.onLeftItemPress.bind(this)} />
                     </View>
-                    <ScrollView>
-                    <View style={styles.rightContainer}>
-                        <Text>{this.state.rightContentTitle}</Text>
-                    </View>
-                    </ScrollView>
+                   <RightComponent items={this.state.rightItems} title={this.state.rightContentTitle}/>
                 </View>
 
             </View>
@@ -78,11 +103,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     rightContainer: {
+        width: screen.width * 550 / 750,
         flexDirection: 'column',
-        backgroundColor: color.white,
-        alignItems: 'center',
-        flex: 1,
-        height: 200
     },
     leftContainer: {
         width: screen.width * 200 / 750,
