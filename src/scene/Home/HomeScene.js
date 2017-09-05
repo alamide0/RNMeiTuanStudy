@@ -22,7 +22,7 @@ class HomeScene extends PureComponent {
         headerTitle: (
             <TouchableOpacity style={styles.searcherBar}>
                 <Image source={require('../../img/Home/search_icon.png')} style={styles.searchIcon} />
-                <Paragraph>赵小四</Paragraph>
+                <Paragraph>赵siyauna</Paragraph>
             </TouchableOpacity>
         ),
         headerRight: (
@@ -74,6 +74,7 @@ class HomeScene extends PureComponent {
     }
 
     componentDidMount() {
+        alert('---')
         this.requestData()
     }
 

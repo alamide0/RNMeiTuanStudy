@@ -144,3 +144,32 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+task hello(dependsOn: 'world'){
+    println ('hello')
+}
+
+task world(){
+    println('world')
+}
+
+task copyDocs(type: Copy){
+    includeEmptyDirs = false
+    from'src'
+        into 'b'
+
+}
+
+task delAFile(type: Delete){
+    delete 'build'
+}
+
+task dabao( type:Zip){
+    destinationDir = file('build')
+    archiveName =  'abc.zip'
+
+    from 'src'
+        into 'hehe'
+}
+
+
