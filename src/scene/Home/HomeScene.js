@@ -22,7 +22,7 @@ class HomeScene extends PureComponent {
         headerTitle: (
             <TouchableOpacity style={styles.searcherBar}>
                 <Image source={require('../../img/Home/search_icon.png')} style={styles.searchIcon} />
-                <Paragraph>赵siyauna</Paragraph>
+                <Paragraph>赵小-2www22四</Paragraph>
             </TouchableOpacity>
         ),
         headerRight: (
@@ -101,7 +101,7 @@ class HomeScene extends PureComponent {
                         title: info.mname, 
                         subtitle: `[${info.range}]${info.title}`,
                         price: info.price
-                    }
+                    }   
                 }
             )
 

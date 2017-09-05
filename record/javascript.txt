@@ -4,3 +4,83 @@
 
     result: Orange,Lemon
 这个方法就是切割对象用的，类似于Java中的subString，只不过在这边感觉更强大，不仅能切割字符串更能切割对象（数组）,值得注意的是含前不含后
+
+2.Java的原型链
+    http://www.ruanyifeng.com/blog/2011/06/designing_ideas_of_inheritance_mechanism_in_javascript.html
+
+
+3.JavaScript的原型链
+
+    要了解原型链得先了解 Person p = new Person()的过程。
+    下面来举个例子
+    var Person(name, age){
+        this.name = name;
+        this.age = age;
+    }
+
+    Person p = new Person();
+
+    那么new 的过程是什么样的呢？
+    function New (f){
+        var m={'__proto__', f.prototype}
+        return function(){
+            f.apply(m, arguments);
+            return n;
+        };
+    }
+
+    another create
+
+    Object.create = function(parent){
+        function F(){
+
+        }
+
+        F.prototype=parent;
+        return new F();
+    }
+
+    别急，下面在来介绍一下prototype是什么玩意，用来干嘛的？以及它存在的意义
+    用构造函数生成的对象有一个缺点，无法共享属性和方法。
+    function DOG(name){
+        this.name = name;
+        this.species='犬科'
+    }
+
+    var dogA = new DOG('大毛');
+    var dogB = new DOG('二毛');
+
+    这两个的对象的species是彼此独立的，修改一个不会影响另一个
+    这会导致无法资源共享，造成资源浪费
+    这里为了数据共享就引进了prototype属性，prototype引用的对象里放置所有实例对象需要共享的属性和方法，那些不需要共享的属性和方法
+    就放在构造函数里面。实例一旦创建将自动引用prototype里面的属性和方法。
+    也就是说实例对象的属性和方法分为两种，一种是本地的， 另一种是引用的。
+
+
+    此处其实可以上图
+
+    有对象
+
+    function Animal(){
+        this.state='alive'
+    }
+
+    function Person(){
+        this.kind='man'
+    }
+
+    Person.prototype = new Animal();
+
+    这里设置Person的原型对象为Animal即继承Animal
+
+    now 
+
+        Person p = new Person();
+        p.state === 'alive' true
+        p.__proto__.constructor === Animal true
+        p.__proto__ === Animal.prototype true
+
+
+
+
+
